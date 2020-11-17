@@ -20,28 +20,32 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
+  <meta name="description" content="安装Aria2 &amp; AriaNg前言Aria2以及流行的WebUIAriaNg分别有单独的镜像，如果一个个分开部署会有些麻烦。这里利用docker compose可以非常简单的统一部署 Docker Compose 配置文件docker compose采用yaml文件进行配置：   123456789101112131415161718192021222324252627282930313">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="http://example.com/2020/11/17/2020.11.16-[Docker]%E5%AE%89%E8%A3%85Aria2&AriaNg/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安装Aria2 &amp; AriaNg前言Aria2以及流行的WebUIAriaNg分别有单独的镜像，如果一个个分开部署会有些麻烦。这里利用docker compose可以非常简单的统一部署 Docker Compose 配置文件docker compose采用yaml文件进行配置：   123456789101112131415161718192021222324252627282930313">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-11-17T05:32:08.362Z">
+<meta property="article:modified_time" content="2020-11-17T05:32:08.362Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2020/11/17/2020.11.16-[Docker]%E5%AE%89%E8%A3%85Aria2&AriaNg/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Hexo</title>
+  <title> | Hexo</title>
   
 
 
@@ -139,9 +143,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
@@ -157,10 +162,9 @@
       <meta itemprop="name" content="Hexo">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
+        <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/17/2020.11.16-%5BDocker%5D%E5%AE%89%E8%A3%85Aria2&AriaNg/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -183,7 +187,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="安装Aria2-amp-AriaNg"><a href="#安装Aria2-amp-AriaNg" class="headerlink" title="安装Aria2 &amp; AriaNg"></a><strong>安装Aria2 &amp; AriaNg</strong></h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>Aria2以及流行的WebUIAriaNg分别有单独的镜像，如果一个个分开部署会有些麻烦。这里利用docker compose可以非常简单的统一部署</p>
+        <h1 id="安装Aria2-amp-AriaNg"><a href="#安装Aria2-amp-AriaNg" class="headerlink" title="安装Aria2 &amp; AriaNg"></a><strong>安装Aria2 &amp; AriaNg</strong></h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>Aria2以及流行的WebUIAriaNg分别有单独的镜像，如果一个个分开部署会有些麻烦。这里利用docker compose可以非常简单的统一部署</p>
 <h2 id="Docker-Compose-配置文件"><a href="#Docker-Compose-配置文件" class="headerlink" title="Docker Compose 配置文件"></a><strong>Docker Compose 配置文件</strong></h2><p>docker compose采用yaml文件进行配置：  </p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.8&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">aria2-pro:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">aria2-pro</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">p3terx/aria2-pro</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PUID=1000</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PGID=1000</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">UMASK_SET=022</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">RPC_SECRET=******</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">RPC_PORT=6800</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">LISTEN_PORT=6888</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DISK_CACHE=64M</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">IPV6_MODE=false</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">UPDATE_TRACKERS=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">CUSTOM_TRACKER_URL=</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">TZ=Asia/Shanghai</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/qing/docker/aria2-config:/config</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/mnt/nas/downloads:/downloads</span></span><br><span class="line"><span class="comment"># If you use host network mode, then no port mapping is required.</span></span><br><span class="line"><span class="comment"># This is your best choice when using IPv6.</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">bridge</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">6800</span><span class="string">:6800</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">6888</span><span class="string">:6888</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">6888</span><span class="string">:6888/udp</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"><span class="comment"># Since Aria2 will continue to generate logs, limit the log size to 1M to prevent your hard disk from running out of space.</span></span><br><span class="line">    <span class="attr">logging:</span></span><br><span class="line">      <span class="attr">driver:</span> <span class="string">json-file</span></span><br><span class="line">      <span class="attr">options:</span></span><br><span class="line">        <span class="attr">max-size:</span> <span class="string">1m</span></span><br><span class="line"><span class="comment"># AriaNg is just a static web page, usually you only need to deploy on a single host.</span></span><br><span class="line">  <span class="attr">ariang:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">ariang</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">p3terx/ariang</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">bridge</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">6880</span><span class="string">:6880</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line">    <span class="attr">logging:</span></span><br><span class="line">      <span class="attr">driver:</span> <span class="string">json-file</span></span><br><span class="line">      <span class="attr">options:</span></span><br><span class="line">        <span class="attr">max-size:</span> <span class="string">1m</span></span><br></pre></td></tr></table></figure>
 <p>需要修改几处配置：</p>
@@ -193,104 +197,30 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f aria2-pro.yml up -d</span><br></pre></td></tr></table></figure>
 <p>随后就会自动拉取所需要的镜像，接着自动部署</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/17/2020.11.16-[Docker]%E5%AE%89%E8%A3%85%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/17/2020.11.16-%5BDocker%5D%E5%AE%89%E8%A3%85%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-11-17 13:32:08" itemprop="dateCreated datePublished" datetime="2020-11-17T13:32:08+08:00">2020-11-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="一、安装-docker-amp-docker-compose"><a href="#一、安装-docker-amp-docker-compose" class="headerlink" title="一、安装 docker &amp; docker compose"></a><strong>一、安装 docker &amp; docker compose</strong></h1><h2 id="安装-docker"><a href="#安装-docker" class="headerlink" title="安装 docker"></a><strong>安装 docker</strong></h2><p>添加过docker官网源之后，直接APT安装：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
-<p>*注意：docker-ce是官网源中包的名称，docker是ubuntu源中的名词</p>
-<h2 id="安装-docker-compose"><a href="#安装-docker-compose" class="headerlink" title="安装 docker compose"></a><strong>安装 docker compose</strong></h2><p>docker-compose是部署多个docker容器的得力工具，借助于yml配置文件。它是一个二进制文件，安装非常简单。参考: <a target="_blank" rel="noopener" href="https://docs.docker.com/compose/install/">官方文档</a>  </p>
-<ol>
-<li>下载docker compose   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https:&#x2F;&#x2F;github.com&#x2F;docker&#x2F;compose&#x2F;releases&#x2F;download&#x2F;1.27.4&#x2F;docker-compose-$(uname -s)-$(uname -m)&quot; -o &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>如果想要安装其他版本，替换掉1.27.4为想要的版本即可。</p>
-</blockquote>
-</li>
-<li>为docker compose 添加可行性权限 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br></pre></td></tr></table></figure>
-<h1 id="二、初始配置"><a href="#二、初始配置" class="headerlink" title="二、初始配置"></a><strong>二、初始配置</strong></h1><h2 id="以非root用户执行docker相关命令"><a href="#以非root用户执行docker相关命令" class="headerlink" title="以非root用户执行docker相关命令"></a><strong>以非root用户执行docker相关命令</strong></h2>安装完成后，执行如 <code>docker ps</code>命令时，提示没有权限。这是因为默认情况下，只有root 或者 docker组内的成员有权限执行 docker 命令。<br>如果不想每次都sudo执行命令，就需要将你添加到docker用户组内。该用户组在docker安装过程中自动被创建。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
-注销并重新登陆。如果想验证是否添加成功：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qing@ubuntuserver:~$ id -nG</span><br><span class="line">qing adm cdrom sudo dip plugdev lxd docker</span><br></pre></td></tr></table></figure>
-注意到当前用户（qing）已经属于docker用户组，即添加成功。随后即可直接执行docker命令。<h2 id="更改docker根目录"><a href="#更改docker根目录" class="headerlink" title="更改docker根目录"></a><strong>更改docker根目录</strong></h2>docker安装后默认的根目录为 <code>/var/lib/docker</code>，可通过下面的命令，查看当前docker根目录。该目录下会存放镜像以及卷等。随着时间会不断增大。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dock info | grep Root</span><br></pre></td></tr></table></figure>
-可将该目录迁移到硬盘空间较大的分区，如/home  </li>
-<li>停止docker服务 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br></pre></td></tr></table></figure></li>
-<li>创建新的docker根目录，如<code>/home/docker</code></li>
-<li>迁移源根目录下的文件： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz &#x2F;var&#x2F;lib&#x2F;docker&#x2F; &#x2F;home&#x2F;docker&#x2F;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>用上述命令文件迁移后，/home/docker的权限也会同样被改变为711</p>
-</blockquote>
-</li>
-<li>配置 /usr/lib/systemd/system/docker.service <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo vim &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service</span><br><span class="line"></span><br><span class="line">···  </span><br><span class="line">[Service]</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;dockerd  --graph&#x3D;&#x2F;home&#x2F;docker&#x2F;</span><br></pre></td></tr></table></figure></li>
-<li>unit配置生效 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure></li>
-<li>重启docker.service <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/17/2020.11.16-%5BDocker%5D%E5%AE%89%E8%A3%85%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -343,6 +273,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Aria2-amp-AriaNg"><span class="nav-number">1.</span> <span class="nav-text">安装Aria2 &amp; AriaNg</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Compose-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">Docker Compose 配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-compose-%E9%83%A8%E7%BD%B2"><span class="nav-number">1.3.</span> <span class="nav-text">docker compose 部署</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
