@@ -155,6 +155,64 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/17/this-is-a-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LittleCaptain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Little Captain's Notebook">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/17/this-is-a-test/" class="post-title-link" itemprop="url">this is a test</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-17 17:01:55 / Modified: 17:02:14" itemprop="dateCreated datePublished" datetime="2020-11-17T17:01:55+08:00">2020-11-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/16/Docker%20FirstBlood%20-%20%E5%AE%89%E8%A3%85Aria2%20&%20AriaNg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -350,7 +408,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-17 16:05:14" itemprop="dateModified" datetime="2020-11-17T16:05:14+08:00">2020-11-17</time>
+                <time title="Modified: 2020-11-17 17:01:17" itemprop="dateModified" datetime="2020-11-17T17:01:17+08:00">2020-11-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -373,15 +431,168 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="I-O工作原理"><a href="#I-O工作原理" class="headerlink" title="I/O工作原理"></a>I/O工作原理</h2><p>先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。<br>要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/28/Linux-I-O%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h2 id="0-I-O工作原理"><a href="#0-I-O工作原理" class="headerlink" title="0. I/O工作原理"></a><strong>0. I/O工作原理</strong></h2><p>先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。<br>要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？</p>
+<p>通常，标准I/O操作需要先调用fopen()函数创建<strong>流</strong>。fgets可以直接调用是因为我们指定的流已经被提前创建好了。众所周知，stdin代表标准输入，是C标准中预定义的。每个进程启动时，会预先为我们创建三个文件流：stdin, stdout, stderr。那“流”这个概念该如何理解？我们把fgets的三个参数串起来翻译一下，即从stdin中取10个字符放到char数组中。就好比，从一个生产流水线（stdin）取十个成品（字符）放到待发货区（储存char的内存空间）一样。</p>
+<p>先以生产线为例，如果每生产一件产品都从原材料仓库直接取恰好的料，那效率是非常低，对资源的消耗相应地非常高（上料员一直奔波于产线与原材料仓库的路上）。为了提高生产效率，通常在生产线旁边设置一个缓冲区（线边库）。生产过程中，根据线边库存情况，定期地向上料员发送指令要求上料。某天，外部客户前来参观。一般情况参观重点往往是围绕着生产区域，偶尔有特殊兴趣的客户会关注一下原材料区的运作形况。对于一个工厂而言，从对内和对外的角度讲，生产区生产区面向客户属于对外空间，而原材料区则属于工厂内部空间（类比后厨）。</p>
+<p>同理，linux也划分了不同的空间，即用户空间和内核空间。当我们调用fgets()时，就是发生在用户空间，它自动完成读取字符并将其存入内存空间的任务。而这个任务，必须有内核空间的相关功能参与，但一般用户不需要关心它是如何调用内核空间的函数的。对内核空间的函数的调用被称作<strong>系统调用</strong>。fgets()在系统底层其实是通过对read()的调用实现的。如果我们有特殊的兴趣，当然也可以通过直接调用read()来实现同样的目的，但这就像每生产一个产品都从原材料仓库取料一样，效率十分低。因此，我们可以认为，C标准I/O调用其实是相对于系统底层I/O服务的高级封装。其优势有两点：</p>
+<ol>
+<li>实现了缓冲区，提高I/O效率</li>
+<li>具有可移植性。上述read()等系统调用仅仅是符合POSIX标准的系统上API, 在非UNIX/Linux 操作系统上无法实现。</li>
+</ol>
+<p>I/O缓冲区的首尾地址等一系列变量被定义在一个FILE结构体（FILE struct）中。而流的本质，则是指向FILE结构的指针。FILE中会包含一个<strong>文件描述符</strong>（file descriptor）。它是内核为了高效管理被打开的文件所创建的索引，是一个小整数，从0开始分配。由于进程启动后会默认打开三个文件，因此0，1，2默认分配给标准输入、标准输入、标准错误。所有执行I/O操作的系统调用都是通过文件描述符进行的，因此它建立了高级I/O与底层I/O直接调用之间的联系。</p>
+<p>除此之外，FILE结构的成员还包含一个文件位置指示器，一个错误指示器，一个文件结尾指示器，一个文件标识符和一个计数器（统计拷贝至缓存区的字节数）。具体结构如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IO_FILE</span> <span class="title">FILE</span>&#123;</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">int</span> _flags;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _IO_file_flags _flags</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span>* _IO_read_ptr;             <span class="comment">//缓冲区中读取数据的当前位置</span></span><br><span class="line"><span class="keyword">char</span>* _IO_read_end;             <span class="comment">//缓冲区中读取数据末尾</span></span><br><span class="line"><span class="keyword">char</span>* _IO_read_base;            <span class="comment">//缓冲区中读取数据首位</span></span><br><span class="line"><span class="keyword">char</span>* _IO_write_base;           <span class="comment">//缓冲区中写入数据首位</span></span><br><span class="line"><span class="keyword">char</span>* _IO_write_ptr;            <span class="comment">//缓冲区中写入数据当前位置</span></span><br><span class="line"><span class="keyword">char</span>* _IO_write_end;            <span class="comment">//缓冲区中写入数据末尾</span></span><br><span class="line"><span class="keyword">char</span>* _IO_buf_base;             <span class="comment">//缓冲区首位</span></span><br><span class="line"><span class="keyword">char</span>* _IO_buf_end;              <span class="comment">//缓冲区末尾</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> *_IO_save_base;</span><br><span class="line"><span class="keyword">char</span> *_IO_backup_base;</span><br><span class="line"><span class="keyword">char</span> *_IO_save_end;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _fileno;                    <span class="comment">//文件描述符</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">IO_marker</span> *_<span class="title">markers</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">IO_FILE</span> *_<span class="title">chain</span>;</span></span><br><span class="line">...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>一个流被初始化（一条产线建造）之后，会自动申请缓冲区（线边库）的空间。需要指出的是，这个缓存区是由用户进程空间创建，因此我们为了区分内核缓冲区，将其称呼为用户缓冲区。在当前系统（Ubuntu 18.04 LTS）上实验得知，一般流缓冲区buf的大小默认为4K, 而stdin为1K，即<code>_IO_buf_end</code> - <code>_IO_buf_base</code>的大小。</p>
+<p>初始状态下, <code>_IO_read_*, _IO_write_*, _IO_buf_base</code> 7个指针都是指向同一个地址。下面分别以读、写操作为例说明：</p>
+<ul>
+<li><p>读取数据：当我们调用fgets()从stdin读取数据时，通过一次read()系统调用，数据会先从内核缓冲区拷贝至stdin的标准I/O缓冲区（用户缓冲区），拷贝长度取决于键盘输入的字符长度。接下来读取数据，都是从用户缓冲区进行的。对于最初的例子，我们从键盘输入123456789并按下回车后，”123456789\0”共10个字符会被存储到stdin的用户缓冲区（stdin-&gt;_IO_read_end - stdin-&gt;_IO_read_base结果为10），然后函数从中读取9个字符”123456789”存入char[10]中，末位自动添加’\0’。如果从键盘输入超过9个字符，函数仍然读取9个字符，整下的字符将留在缓冲区中。此时再次调用fgets，函数会首先从上次的位置接着往下读。如果从其他的文件流读取数据，最多可以一次性读buf_max长度的数据到缓存区。当缓存区中的数据被读完后，函数会调用一次read()，再次从内核缓冲区拷贝数据。</p>
+</li>
+<li><p>写入数据：待写入的数据从其他内存位置首先被写入到用户缓冲区。此时涉及到标准I/O缓冲区的刷新策略</p>
+<ul>
+<li>全缓冲：当标准I/O缓冲区被填满时，进行一次冲刷，即执行一次write()系统调用</li>
+<li>行缓冲：当遇到换行符时, 对标准I/O缓冲区执行一次冲刷。</li>
+<li>无缓冲：标准I/O不对字符进行缓冲存储，典型代表时stderr。</li>
+</ul>
+<p>也可以通过调用fflush()，手动执行冲刷。另外，在调用fclose()关闭流时，会包含一次冲刷缓冲区的动作。</p>
+</li>
+</ul>
+<h2 id="1-系统调用I-O"><a href="#1-系统调用I-O" class="headerlink" title="1. 系统调用I/O"></a><strong>1. 系统调用I/O</strong></h2><p><strong>系统调用I/O</strong>服务，又称底层I/O(<em>low-level I/O</em>)。POSIX标准API提供的接口有：open(), close(), read(), write(), ioctl()</p>
+<h3 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h3><ul>
+<li>函数open() - 打开一个文件</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;   //定义新的数据类型</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;    //文件信息结构体的定义</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;       //声明系统调用</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;      //POSIX标准定义的unix类操作系统头文件</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">int</span> flags, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// pathname: 文件路径及文件名</span></span><br><span class="line"><span class="comment">// flags: 标志位</span></span><br><span class="line"><span class="comment">// mode: 文件读写权限</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功返回文件描述符</span></span><br><span class="line"><span class="comment">// 失败返回-1，通过perror()查看详细错误描述</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>函数close() - 关闭一个文件</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">close</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// fd: 要关闭的文件描述符</span></span><br><span class="line"></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功返回0, 失败返回-1, 并设置errno, 通过perror()查看详细错误描述</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>函数write() - 将制定大小的数据写入文件</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">write</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">void</span> *addr,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// fd: 文件描述符</span></span><br><span class="line"><span class="comment">// addr: 数据首地址</span></span><br><span class="line"><span class="comment">// count: 写入数据的字节数</span></span><br><span class="line"></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功返回实际写入数据的字节个数</span></span><br><span class="line"><span class="comment">// 失败返回-1，通过perror()查看详细错误描述</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>函数read() - 从文件读取指定大小的数据到内存</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *addr, <span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// fd: 文件描述符</span></span><br><span class="line"><span class="comment">// addr: 数据首地址</span></span><br><span class="line"><span class="comment">// count: 写入数据的字节数</span></span><br><span class="line"></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功返回实际读取到的字节个数</span></span><br><span class="line"><span class="comment">// 失败返回-1，通过perror()查看详细错误描述</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-C标准I-O"><a href="#2-C标准I-O" class="headerlink" title="2. C标准I/O"></a><strong>2. C标准I/O</strong></h2><p><strong>标准高级I/O</strong>（<em>stardard high-level I/O</em>）是通过标准I/O库（stdio)及其头文件(stdio.h)对底层I/O系统调用的封装，提供了通用的接口。这个库现已成为ANSI标准C的一部分。</p>
+<h3 id="标准I-O库函数"><a href="#标准I-O库函数" class="headerlink" title="标准I/O库函数"></a>标准I/O库函数</h3><ul>
+<li>fopen() - 打开一个流</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function">FILE *<span class="title">fopen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *filename, <span class="keyword">const</span> <span class="keyword">char</span> *mode)</span></span>;</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// filename: 文件路径及文件名</span></span><br><span class="line"><span class="comment">// mode: 文件打开方式。详见Appendix A</span></span><br><span class="line"></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功返回非空FILE指针，失败时返回NULL</span></span><br><span class="line"><span class="comment">// 文件流FILE*的数量由头文件stdio.h中的FOPEN_MAX来设定</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fclose() - 关闭一个流</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fclose</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// stream: 文件流</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功关闭返回0，否则返回EOF(-1)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>getchar(), fgetc(), getc() - 读取单个字符</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getchar</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fgetc</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getc</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">// getchar从标准输入stdin中读取，而fgetc/getc从指定的文件流中读取</span></span><br><span class="line"><span class="comment">// getc可实现为宏，无法用函数指针调用</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功时为获得的字符，失败时为EOF</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>putchar(), fputc(), putc() - 写入单个字符</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">putchar</span><span class="params">(<span class="keyword">int</span> c)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fputc</span><span class="params">(<span class="keyword">int</span> c, FILE *stream)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">putc</span><span class="params">(<span class="keyword">int</span> c, FILE *stream)</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">// putchar写入字符ch到标准输出stdout中，而fputc/putc写入字符 ch到给定输出流stream中</span></span><br><span class="line"><span class="comment">// putc可实现为宏，无法用函数指针调用</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功时返回被写入的字符，失败时为EOF</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fscanf(), fprintf() - 有格式输入/输出</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fscanf</span><span class="params">(FILE *stream, <span class="keyword">const</span> <span class="keyword">char</span> *format, ...)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fprintf</span><span class="params">( FILE *stream, <span class="keyword">const</span> <span class="keyword">char</span> *format, ... )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>gets(), fgets() - 读取一行字符</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">gets</span><span class="params">(<span class="keyword">char</span> *str)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">fgets</span><span class="params">(<span class="keyword">char</span> *<span class="keyword">restrict</span> str, <span class="keyword">int</span> count, FILE *<span class="keyword">restrict</span> stream)</span></span>;</span><br><span class="line"></span><br><span class="line">说明；</span><br><span class="line"><span class="comment">// gets: 从stdin中读入字符数组存入str为首地址的内存中，直到出现换行符或者文件尾。</span></span><br><span class="line"><span class="comment">//       换行符被舍弃。但由于没有设定读入数据的大小，存在缓冲区泄露的风险，故在C11中移除</span></span><br><span class="line"><span class="comment">// fgets: 从给定的流stream中读取最多n-1个字符存入str为首地址的内存中。出现换行符</span></span><br><span class="line"><span class="comment">//        或者文件尾时停止，前者buf中会保存换行符</span></span><br><span class="line"></span><br><span class="line">返回值:</span><br><span class="line"><span class="comment">// 成功时为str, 失败时为空指针</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>puts(), fputs() - 写入一行字符</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">puts</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *str)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fputs</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *str, FILE *stream)</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">// puts: 将str中的字符串及附加换行符写入到标准输出流stdout</span></span><br><span class="line"><span class="comment">// fputs: 将str中的字符串写入到指定输出流stream中，不自动添加换行符</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功时返回非负值，失败时返回EOF(-1)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fread(), fwrite() - 读取/写入数据块</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">fread</span><span class="params">(<span class="keyword">void</span> *str, <span class="keyword">size_t</span> size, <span class="keyword">size_t</span> nitems, FILE *stream)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">fwrite</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *str, <span class="keyword">size_t</span> size, <span class="keyword">size_t</span> nitems, FILE *stream)</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">// fread: 从给定的输入流读取最多nitems个对象到str</span></span><br><span class="line"><span class="comment">// fwrite: 将数据从str写入输出流</span></span><br><span class="line"><span class="comment">// 流stream必须采用二进制模式</span></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// str: 用户定义的储存数据的空间</span></span><br><span class="line"><span class="comment">// size: 每个数据块大小</span></span><br><span class="line"><span class="comment">// nitems: 数据块个数</span></span><br><span class="line"><span class="comment">// stream: 操作的文件流</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>rewind() - 改变file position indicator到文件起始位置</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rewind</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line"></span><br><span class="line">说明:</span><br><span class="line"><span class="comment">// 将file position indicator移到流的初始</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ftell() - 计算file position indicator的位置</li>
+<li>fseek() - 改变file position indicator的位置</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">ftell</span><span class="params">( FILE *stream )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fseek</span><span class="params">( FILE *stream, <span class="keyword">long</span> offset, <span class="keyword">int</span> origin )</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">// 对于二进制模式和文本模式，作用表现不同</span></span><br><span class="line"><span class="comment">// ftell: 二进制模式下, 返回long类型数值，表示当前位置与文件第一字节的距离; 文本模式下，返回值仅作为fseek的第二个参数时有意义。</span></span><br><span class="line"><span class="comment">// fseek: 二进制模式下，offset为准确的偏移量；文本模式下，offset的仅支持0L和先前对同一stream文件流调用ftell返回的值</span></span><br><span class="line"></span><br><span class="line">参数:</span><br><span class="line"><span class="comment">// stream: 要修改的文件流</span></span><br><span class="line"><span class="comment">// offset: 相对于origin偏移的字符的数量</span></span><br><span class="line"><span class="comment">// origin: 初始位置, 可能的值SEEK_SET, SEEK_CUR, SEEK_END</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// ftell: 成功时返回file position indicator，失败时返回-1</span></span><br><span class="line"><span class="comment">// fseek: 成功时返回0，失败时返回非0值</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fgetpos(), fsetpos() - 针对大型文件的定位函数</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fgetpos</span><span class="params">( FILE *<span class="keyword">restrict</span> stream, <span class="keyword">fpos_t</span> *<span class="keyword">restrict</span> pos )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fsetpos</span><span class="params">( FILE *stream, <span class="keyword">const</span> <span class="keyword">fpos_t</span> *pos )</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">// 相比fseek(),ftell()能够处理更大文件的定位</span></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// stream: 文件流</span></span><br><span class="line"><span class="comment">// pos: 指向fpos_t类型的指针。fpos_t的值定义了file position indicator的位置</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fflush() - 清空输出缓存区</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fflush</span><span class="params">( FILE *stream )</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">// 对于输出流，将任何未写入的数据从输出缓冲区写入到相关设备文件。对于输入流，行为未定义</span></span><br><span class="line"><span class="comment">// 如果stream为空指针，对有所打开的输出流执行操作</span></span><br><span class="line">返回值:</span><br><span class="line"><span class="comment">// 成功时返回0，失败时返回EOF</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>feof() - 检测是否到达文件末尾</li>
+<li>ferror() - 检测指定流是否有错误发生</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">feof</span><span class="params">( FILE *stream )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ferror</span><span class="params">( FILE *stream )</span></span>;</span><br><span class="line"></span><br><span class="line">返回值:</span><br><span class="line"><span class="comment">// feof: 到达文件末尾时返回非零值，否则返回0</span></span><br><span class="line"><span class="comment">// ferror: 有错误发生时返回非零值，否则返回0</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>setvbuf() - 为文件流设置缓冲区</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setvbuf</span><span class="params">( FILE *<span class="keyword">restrict</span> stream, <span class="keyword">char</span> *<span class="keyword">restrict</span> buffer, <span class="keyword">int</span> mode, <span class="keyword">size_t</span> size )</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">//该函数只有当文件流被打开后，但是还未进行其他操作时才可以使用</span></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// stream: 文件流</span></span><br><span class="line"><span class="comment">// buffer: 待使用的缓冲区首地址。如果为NULL,则改变fopen定义的缓冲区的大小至size;如果不为NULL,则将文件流的缓冲区设置为buffer表示的缓冲区，并设置大小为size。</span></span><br><span class="line"><span class="comment">// mode: 待使用的缓冲模式：_IOFBF=完全缓冲（缓冲区满时刷新），_IOLBF=行缓冲（缓冲区满或者遇到换行符时刷新），_IONBF=无缓冲</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功时返回0，失败返回非零值</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Appendex-A"><a href="#Appendex-A" class="headerlink" title="Appendex A"></a><strong>Appendex A</strong></h2><table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>r, rb</td>
+<td>以只读方式打开</td>
+</tr>
+<tr>
+<td>w, wb</td>
+<td>以写方式打开，并把文件长度截短为零。如果文件不存在，则创建一个文件</td>
+</tr>
+<tr>
+<td>a, ab</td>
+<td>以写方式打开，新内容追加在文件尾。如果文件不存在，则创建一个文件</td>
+</tr>
+<tr>
+<td>r+, rb+, r+b</td>
+<td>以更新方式打开（读和写）</td>
+</tr>
+<tr>
+<td>w+, wb+, w+b</td>
+<td>以更新方式打开，并把文件长度截短为零。如果文件不存在，则创建一个文件</td>
+</tr>
+<tr>
+<td>a+, ab+, a+b</td>
+<td>以更新方式打开，新内容追加在文件尾。如果文件不存在，则创建一个文件。</td>
+</tr>
+<tr>
+<td>wx, wbx, w+x, wb+x, w+bx</td>
+<td>(C11)类似上述非x模式，但是如果文件已存在或以独占模式打开，则打开文件失败。</td>
+</tr>
+<tr>
+<td>*b：表示二进制模式，而非文本模式</td>
+<td></td>
+</tr>
+</tbody></table>
+
       
     </div>
 
@@ -462,7 +673,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
