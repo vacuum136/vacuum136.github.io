@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="0. I&#x2F;O工作原理先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？ 通常，标准I&#x2F;O操作需要先调用fopen()函数创建流。fgets可以直接调用是因为我们指定的流已经被提前创建好了。">
+  <meta name="description" content="先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux I&#x2F;O机制分析">
 <meta property="og:url" content="http://example.com/2020/03/28/Linux-I-O%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="Little Captain&#39;s Notebook">
-<meta property="og:description" content="0. I&#x2F;O工作原理先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？ 通常，标准I&#x2F;O操作需要先调用fopen()函数创建流。fgets可以直接调用是因为我们指定的流已经被提前创建好了。">
+<meta property="og:description" content="先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-03-28T02:50:28.000Z">
-<meta property="article:modified_time" content="2020-11-17T09:01:17.530Z">
+<meta property="article:modified_time" content="2020-11-17T11:42:29.987Z">
 <meta property="article:author" content="LittleCaptain">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="I&#x2F;O-Stream">
@@ -193,7 +193,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-17 17:01:17" itemprop="dateModified" datetime="2020-11-17T17:01:17+08:00">2020-11-17</time>
+                <time title="Modified: 2020-11-17 19:42:29" itemprop="dateModified" datetime="2020-11-17T19:42:29+08:00">2020-11-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -216,7 +216,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="0-I-O工作原理"><a href="#0-I-O工作原理" class="headerlink" title="0. I/O工作原理"></a><strong>0. I/O工作原理</strong></h2><p>先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。<br>要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？</p>
+        <p>先通过一个简单的例子来说明：即从键盘输入”123456789”这9个字符，然后保存在数组char[10]中。要完成这个操作，可以调用函数fgets(char, 10, stdin);这个简单的函数调用为什么可以完成写入字符串的操作？它执行的背后具体做了哪些事情？</p>
+<a id="more"></a>
 <p>通常，标准I/O操作需要先调用fopen()函数创建<strong>流</strong>。fgets可以直接调用是因为我们指定的流已经被提前创建好了。众所周知，stdin代表标准输入，是C标准中预定义的。每个进程启动时，会预先为我们创建三个文件流：stdin, stdout, stderr。那“流”这个概念该如何理解？我们把fgets的三个参数串起来翻译一下，即从stdin中取10个字符放到char数组中。就好比，从一个生产流水线（stdin）取十个成品（字符）放到待发货区（储存char的内存空间）一样。</p>
 <p>先以生产线为例，如果每生产一件产品都从原材料仓库直接取恰好的料，那效率是非常低，对资源的消耗相应地非常高（上料员一直奔波于产线与原材料仓库的路上）。为了提高生产效率，通常在生产线旁边设置一个缓冲区（线边库）。生产过程中，根据线边库存情况，定期地向上料员发送指令要求上料。某天，外部客户前来参观。一般情况参观重点往往是围绕着生产区域，偶尔有特殊兴趣的客户会关注一下原材料区的运作形况。对于一个工厂而言，从对内和对外的角度讲，生产区生产区面向客户属于对外空间，而原材料区则属于工厂内部空间（类比后厨）。</p>
 <p>同理，linux也划分了不同的空间，即用户空间和内核空间。当我们调用fgets()时，就是发生在用户空间，它自动完成读取字符并将其存入内存空间的任务。而这个任务，必须有内核空间的相关功能参与，但一般用户不需要关心它是如何调用内核空间的函数的。对内核空间的函数的调用被称作<strong>系统调用</strong>。fgets()在系统底层其实是通过对read()的调用实现的。如果我们有特殊的兴趣，当然也可以通过直接调用read()来实现同样的目的，但这就像每生产一个产品都从原材料仓库取料一样，效率十分低。因此，我们可以认为，C标准I/O调用其实是相对于系统底层I/O服务的高级封装。其优势有两点：</p>
@@ -242,7 +243,7 @@
 <p>也可以通过调用fflush()，手动执行冲刷。另外，在调用fclose()关闭流时，会包含一次冲刷缓冲区的动作。</p>
 </li>
 </ul>
-<h2 id="1-系统调用I-O"><a href="#1-系统调用I-O" class="headerlink" title="1. 系统调用I/O"></a><strong>1. 系统调用I/O</strong></h2><p><strong>系统调用I/O</strong>服务，又称底层I/O(<em>low-level I/O</em>)。POSIX标准API提供的接口有：open(), close(), read(), write(), ioctl()</p>
+<h2 id="系统调用I-O"><a href="#系统调用I-O" class="headerlink" title="系统调用I/O"></a>系统调用I/O</h2><p><strong>系统调用I/O</strong>服务，又称底层I/O(<em>low-level I/O</em>)。POSIX标准API提供的接口有：open(), close(), read(), write(), ioctl()</p>
 <h3 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h3><ul>
 <li>函数open() - 打开一个文件</li>
 </ul>
@@ -263,7 +264,7 @@
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *addr, <span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// fd: 文件描述符</span></span><br><span class="line"><span class="comment">// addr: 数据首地址</span></span><br><span class="line"><span class="comment">// count: 写入数据的字节数</span></span><br><span class="line"></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功返回实际读取到的字节个数</span></span><br><span class="line"><span class="comment">// 失败返回-1，通过perror()查看详细错误描述</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="2-C标准I-O"><a href="#2-C标准I-O" class="headerlink" title="2. C标准I/O"></a><strong>2. C标准I/O</strong></h2><p><strong>标准高级I/O</strong>（<em>stardard high-level I/O</em>）是通过标准I/O库（stdio)及其头文件(stdio.h)对底层I/O系统调用的封装，提供了通用的接口。这个库现已成为ANSI标准C的一部分。</p>
+<h2 id="C标准I-O"><a href="#C标准I-O" class="headerlink" title="C标准I/O"></a>C标准I/O</h2><p><strong>标准高级I/O</strong>（<em>stardard high-level I/O</em>）是通过标准I/O库（stdio)及其头文件(stdio.h)对底层I/O系统调用的封装，提供了通用的接口。这个库现已成为ANSI标准C的一部分。</p>
 <h3 id="标准I-O库函数"><a href="#标准I-O库函数" class="headerlink" title="标准I/O库函数"></a>标准I/O库函数</h3><ul>
 <li>fopen() - 打开一个流</li>
 </ul>
@@ -337,7 +338,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setvbuf</span><span class="params">( FILE *<span class="keyword">restrict</span> stream, <span class="keyword">char</span> *<span class="keyword">restrict</span> buffer, <span class="keyword">int</span> mode, <span class="keyword">size_t</span> size )</span></span>;</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line"><span class="comment">//该函数只有当文件流被打开后，但是还未进行其他操作时才可以使用</span></span><br><span class="line">参数：</span><br><span class="line"><span class="comment">// stream: 文件流</span></span><br><span class="line"><span class="comment">// buffer: 待使用的缓冲区首地址。如果为NULL,则改变fopen定义的缓冲区的大小至size;如果不为NULL,则将文件流的缓冲区设置为buffer表示的缓冲区，并设置大小为size。</span></span><br><span class="line"><span class="comment">// mode: 待使用的缓冲模式：_IOFBF=完全缓冲（缓冲区满时刷新），_IOLBF=行缓冲（缓冲区满或者遇到换行符时刷新），_IONBF=无缓冲</span></span><br><span class="line">返回值：</span><br><span class="line"><span class="comment">// 成功时返回0，失败返回非零值</span></span><br></pre></td></tr></table></figure>
 
 <hr>
-<h2 id="Appendex-A"><a href="#Appendex-A" class="headerlink" title="Appendex A"></a><strong>Appendex A</strong></h2><table>
+<h2 id="Appendex-A"><a href="#Appendex-A" class="headerlink" title="Appendex A"></a>Appendex A</h2><table>
 <thead>
 <tr>
 <th>Mode</th>
@@ -459,7 +460,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-I-O%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">0. I&#x2F;O工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8I-O"><span class="nav-number">2.</span> <span class="nav-text">1. 系统调用I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8E%9F%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-C%E6%A0%87%E5%87%86I-O"><span class="nav-number">3.</span> <span class="nav-text">2. C标准I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86I-O%E5%BA%93%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">标准I&#x2F;O库函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Appendex-A"><span class="nav-number">4.</span> <span class="nav-text">Appendex A</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8I-O"><span class="nav-number">1.</span> <span class="nav-text">系统调用I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8E%9F%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C%E6%A0%87%E5%87%86I-O"><span class="nav-number">2.</span> <span class="nav-text">C标准I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86I-O%E5%BA%93%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">标准I&#x2F;O库函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Appendex-A"><span class="nav-number">3.</span> <span class="nav-text">Appendex A</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
