@@ -20,15 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Little Captain&#39;s Notebook">
-<meta property="og:url" content="http://example.com/categories/Programming/C/index.html">
+  <meta name="description" content="安装了aria2之后，希望可以直接把内容下载到同网络下的群晖NAS上，但是没有找到直接设置共享目录的方法。于是想到可以在本机上挂载一个NAS上的共享目录，然后把下载目录设置到挂在的共享目录上。NFS是Linux上常用的共享方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu挂载NFS目录">
+<meta property="og:url" content="http://example.com/2020/11/17/Ubuntu%E6%8C%82%E8%BD%BDNFS%E7%9B%AE%E5%BD%95/index.html">
 <meta property="og:site_name" content="Little Captain&#39;s Notebook">
+<meta property="og:description" content="安装了aria2之后，希望可以直接把内容下载到同网络下的群晖NAS上，但是没有找到直接设置共享目录的方法。于是想到可以在本机上挂载一个NAS上的共享目录，然后把下载目录设置到挂在的共享目录上。NFS是Linux上常用的共享方式。">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-11-17T13:49:40.000Z">
+<meta property="article:modified_time" content="2020-11-18T02:07:26.885Z">
 <meta property="article:author" content="LittleCaptain">
+<meta property="article:tag" content="Ubuntu">
+<meta property="article:tag" content="NFS">
+<meta property="article:tag" content="Mount">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/categories/Programming/C/">
+<link rel="canonical" href="http://example.com/2020/11/17/Ubuntu%E6%8C%82%E8%BD%BDNFS%E7%9B%AE%E5%BD%95/">
 
 
 <script id="page-configurations">
@@ -36,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Category: C | Little Captain's Notebook</title>
+  <title>Ubuntu挂载NFS目录 | Little Captain's Notebook</title>
   
 
 
@@ -149,51 +156,115 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">C
-          <small>Category</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/17/Ubuntu%E6%8C%82%E8%BD%BDNFS%E7%9B%AE%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LittleCaptain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Little Captain's Notebook">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ubuntu挂载NFS目录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-11-17 21:49:40" itemprop="dateCreated datePublished" datetime="2020-11-17T21:49:40+08:00">2020-11-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-18 10:07:26" itemprop="dateModified" datetime="2020-11-18T10:07:26+08:00">2020-11-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/Usage/" itemprop="url" rel="index"><span itemprop="name">Usage</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <p>安装了aria2之后，希望可以直接把内容下载到同网络下的群晖NAS上，但是没有找到直接设置共享目录的方法。于是想到可以在本机上挂载一个NAS上的共享目录，然后把下载目录设置到挂在的共享目录上。NFS是Linux上常用的共享方式。</p>
+<a id="more"></a>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>群晖作为NFS Server，在控制面板里可以傻瓜式一键设置好。这里Ubuntu作为NFS Client需要几步准备工作。参考<a target="_blank" rel="noopener" href="https://help.ubuntu.com/community/SettingUpNFSHowTo">Ubuntu Wiki NFS HowTo</a></p>
+<p>群晖上开启了NFSv4支持，这里仅需安装一个nfs工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nfs-common</span><br></pre></td></tr></table></figure>
+
+<h2 id="挂载"><a href="#挂载" class="headerlink" title="挂载"></a>挂载</h2><p>NAS的ip为192.168.1.110，假设NAS上的共享目录路径为/volume2/nfs，ubuntu上挂载点为/mnt/nas。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir /mnt/nas</span><br><span class="line">mount -t nfs 192.168.1.110:/volume2/nfs /mnt/nas</span><br></pre></td></tr></table></figure>
+
+<p>如果没有任何返回，表示挂载成功了。可以ls命令看一下，是否能够正常显示共享目录中的内容。</p>
+<p>这样挂载后，如果重启系统挂载就失效了。如果想要让系统启动时自动挂载，就需要在/etc/fstab文件中添加下面内容并保存。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mount NFS file system served by NAS</span></span><br><span class="line">192.168.1.110:/volume2/nfs /mnt/nas nfs rw,hard,intr 0 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级设置"><a href="#高级设置" class="headerlink" title="高级设置"></a>高级设置</h2><p>NFS挂载后就可以直接设置成下载目录了。这一节涉及NFS的优化。我并没有经历去折腾，仅放到最后作为备忘。</p>
+<p>参考<a target="_blank" rel="noopener" href="http://nfs.sourceforge.net/nfs-howto/ar01s05.html">Optimizing NFS Performance</a></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-03-28T10:50:28+08:00"
-              content="2020-03-28">
-          03-28
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+              <a href="/tags/NFS/" rel="tag"># NFS</a>
+              <a href="/tags/Mount/" rel="tag"># Mount</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/03/28/Linux-I-O%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/" itemprop="url">
-            <span itemprop="name">Linux I/O机制分析</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/17/Ubuntu-Server%E5%AE%89%E8%A3%85%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/" rel="prev" title="Ubuntu Server安装及初始化配置">
+      <i class="fa fa-chevron-left"></i> Ubuntu Server安装及初始化配置
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -246,6 +317,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%82%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">挂载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">高级设置</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
