@@ -20,15 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Little Captain&#39;s Notebook">
-<meta property="og:url" content="http://example.com/tags/Ubuntu/index.html">
+  <meta name="description" content="ESXi中安装群晖虚拟机，尝试启用硬盘直通，现记录过程。 RDM直通最初采用的是RDM直通的方式，是将整个硬盘映射为虚拟硬盘，供虚拟机使用。后续再补方法。 SATA直通SATA直通就是将主板的SATA控制器直通给某个虚拟机使用。直通给群辉，那SATA控制器下连接的所有硬盘仅群辉虚拟机可以读取。操作步骤如下：  在vSphere Web Client 打开主机SSH。  主机-操作-服务-启用安全S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="群辉硬盘直通">
+<meta property="og:url" content="http://example.com/2020/12/01/%E7%BE%A4%E8%BE%89%E7%A1%AC%E7%9B%98%E7%9B%B4%E9%80%9A/index.html">
 <meta property="og:site_name" content="Little Captain&#39;s Notebook">
+<meta property="og:description" content="ESXi中安装群晖虚拟机，尝试启用硬盘直通，现记录过程。 RDM直通最初采用的是RDM直通的方式，是将整个硬盘映射为虚拟硬盘，供虚拟机使用。后续再补方法。 SATA直通SATA直通就是将主板的SATA控制器直通给某个虚拟机使用。直通给群辉，那SATA控制器下连接的所有硬盘仅群辉虚拟机可以读取。操作步骤如下：  在vSphere Web Client 打开主机SSH。  主机-操作-服务-启用安全S">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-12-01T01:17:53.000Z">
+<meta property="article:modified_time" content="2020-12-01T02:00:33.674Z">
 <meta property="article:author" content="LittleCaptain">
+<meta property="article:tag" content="群晖">
+<meta property="article:tag" content="硬盘直通">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/tags/Ubuntu/">
+<link rel="canonical" href="http://example.com/2020/12/01/%E7%BE%A4%E8%BE%89%E7%A1%AC%E7%9B%98%E7%9B%B4%E9%80%9A/">
 
 
 <script id="page-configurations">
@@ -36,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Tag: Ubuntu | Little Captain's Notebook</title>
+  <title>群辉硬盘直通 | Little Captain's Notebook</title>
   
 
 
@@ -149,71 +155,109 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">Ubuntu
-          <small>Tag</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/01/%E7%BE%A4%E8%BE%89%E7%A1%AC%E7%9B%98%E7%9B%B4%E9%80%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LittleCaptain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Little Captain's Notebook">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          群辉硬盘直通
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-01 09:17:53 / Modified: 10:00:33" itemprop="dateCreated datePublished" datetime="2020-12-01T09:17:53+08:00">2020-12-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NAS/" itemprop="url" rel="index"><span itemprop="name">NAS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
+        <p>ESXi中安装群晖虚拟机，尝试启用硬盘直通，现记录过程。</p>
+<h2 id="RDM直通"><a href="#RDM直通" class="headerlink" title="RDM直通"></a>RDM直通</h2><p>最初采用的是RDM直通的方式，是将整个硬盘映射为虚拟硬盘，供虚拟机使用。后续再补方法。</p>
+<h2 id="SATA直通"><a href="#SATA直通" class="headerlink" title="SATA直通"></a>SATA直通</h2><p>SATA直通就是将主板的SATA控制器直通给某个虚拟机使用。直通给群辉，那SATA控制器下连接的所有硬盘仅群辉虚拟机可以读取。操作步骤如下：</p>
+<ol>
+<li><p>在vSphere Web Client 打开主机SSH。</p>
+<p> 主机-操作-服务-启用安全Shell（SSH）</p>
+</li>
+<li><p>SSH登录群辉</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lspci -v | grep <span class="string">&quot;Class 0106&quot;</span> -B 1  </span><br></pre></td></tr></table></figure>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<p> 该命令运行后，会看到类似下面的输出：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0000:00:1f.2 SATA controller Mass storage controller: Intel Corporation Wellsburg AHCI Controller [vmhba0]</span><br><span class="line">     Class 0106: 8086:8c02</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改passthru.map</p>
+<p> 编辑etc/vmware/passthru.map，在末尾添加如下第二行信息（第一行注释随意）：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Intel Corporation Lynx Point AHCI Controller</span></span><br><span class="line">8086   8c02    d3d0    <span class="literal">false</span></span><br><span class="line">------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 下面是格式说明，不必添加</span></span><br><span class="line"><span class="comment"># file format: vendor-id device-id resetMethod fptShareable</span></span><br><span class="line"><span class="comment"># vendor/device id: xxxx (in hex) (ffff can be used for wildchar match)</span></span><br><span class="line"><span class="comment"># reset methods: flr, d3d0, link, bridge, default</span></span><br><span class="line"><span class="comment"># fptShareable: true/default, false</span></span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-17T21:49:40+08:00"
-              content="2020-11-17">
-          11-17
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/11/17/Ubuntu%E6%8C%82%E8%BD%BDNFS%E7%9B%AE%E5%BD%95/" itemprop="url">
-            <span itemprop="name">Ubuntu挂载NFS目录</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-17T20:43:47+08:00"
-              content="2020-11-17">
-          11-17
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/11/17/Ubuntu-Server%E5%AE%89%E8%A3%85%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE/" itemprop="url">
-            <span itemprop="name">Ubuntu Server安装及初始化配置</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+<p> 其中8086是PCIE设备的供应商ID，8c02是第2步中查到的PCIE设备的设备ID。设备ID会根据个人情况改变，仅供参考。</p>
+</li>
+</ol>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BE%A4%E6%99%96/" rel="tag"># 群晖</a>
+              <a href="/tags/%E7%A1%AC%E7%9B%98%E7%9B%B4%E9%80%9A/" rel="tag"># 硬盘直通</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/17/Ubuntu%E6%8C%82%E8%BD%BDNFS%E7%9B%AE%E5%BD%95/" rel="prev" title="Ubuntu挂载NFS目录">
+      <i class="fa fa-chevron-left"></i> Ubuntu挂载NFS目录
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -266,6 +310,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDM%E7%9B%B4%E9%80%9A"><span class="nav-number">1.</span> <span class="nav-text">RDM直通</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SATA%E7%9B%B4%E9%80%9A"><span class="nav-number">2.</span> <span class="nav-text">SATA直通</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
