@@ -27,8 +27,8 @@
 <meta property="og:site_name" content="Little Captain&#39;s Notebook">
 <meta property="og:description" content="初接触docker, 仅以本文简单记录docker以及docker compose的安装过程。本文以在ubuntu上使用为例。">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-11-16T07:38:00.000Z">
-<meta property="article:modified_time" content="2020-11-18T11:39:52.072Z">
+<meta property="article:published_time" content="2020-11-16T15:38:00.000Z">
+<meta property="article:modified_time" content="2021-05-24T12:45:56.190Z">
 <meta property="article:author" content="LittleCaptain">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="ubuntu">
@@ -186,14 +186,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-11-16 15:38:00" itemprop="dateCreated datePublished" datetime="2020-11-16T15:38:00+08:00">2020-11-16</time>
+              <time title="Created: 2020-11-16 15:38:00" itemprop="dateCreated datePublished" datetime="2020-11-16T15:38:00+00:00">2020-11-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-18 19:39:52" itemprop="dateModified" datetime="2020-11-18T19:39:52+08:00">2020-11-18</time>
+                <time title="Modified: 2021-05-24 12:45:56" itemprop="dateModified" datetime="2021-05-24T12:45:56+00:00">2021-05-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -205,11 +205,11 @@
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Fun/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                  <a href="/categories/Fun/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -231,26 +231,21 @@
         <p>初接触docker, 仅以本文简单记录docker以及docker compose的安装过程。本文以在ubuntu上使用为例。</p>
 <a id="more"></a>
 
-<h2 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h2><h3 id="添加-Docker官方源"><a href="#添加-Docker官方源" class="headerlink" title="添加 Docker官方源"></a>添加 Docker官方源</h3><ol>
+<h2 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h2><p>这里采用添加docker官方源的方式。当然，也可以直接通过ubuntu的源apt安装，但是版本可能比较旧。</p>
+<h3 id="添加-Docker官方源"><a href="#添加-Docker官方源" class="headerlink" title="添加 Docker官方源"></a>添加 Docker官方源</h3><ol>
 <li><p>首先，更新软件包索引，并且安装必要的依赖软件以便添加 HTTPS 软件源：</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update  </span><br><span class="line">sudo apt install apt-transport-https ca-certificates curl software-properties-common</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install apt-transport-https ca-certificates curl software-properties-common</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>注意：有些可能系统默认已经安装上述软件</p>
 </blockquote>
 </li>
-<li><p>使用下面的 curl 导入源仓库的 GPG key：  </p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
-
-<p> 将 Docker APT 软件源添加到系统：  </p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository <span class="string">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu <span class="subst">$(lsb_release -cs)</span> stable&quot;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：上面的命令直接在sources.list末尾添加一行</p>
-</blockquote>
+<li><p>添加docker官方源：  </p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor &gt; docker.gpg</span><br><span class="line"></span><br><span class="line">sudo install -o root -g root -m 644 docker.gpg /etc/apt/trusted.gpg.d/</span><br><span class="line"></span><br><span class="line">sudo sh -c <span class="string">&#x27;echo &quot;deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot; &gt; /etc/apt/sources.list.d/docker.list&#x27;</span></span><br><span class="line"></span><br><span class="line">rm -f docker.gpg    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p> 安装docker.gpg后，可以将其删除</p>
 </li>
-<li><p>直接APT安装：  </p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
+<li><p>更新apt源，然后安装：  </p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>注意：docker-ce是官网源中包的名称，docker是ubuntu源中的。</p>
@@ -443,8 +438,8 @@
 
 <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
